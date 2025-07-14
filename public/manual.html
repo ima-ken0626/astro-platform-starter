@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>浄化槽 故障調査・安全作業マニュアル</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans JP', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+        .sidebar-link.active {
+            background-color: #3b82f6;
+            color: white;
+        }
+        .jsa-table td, .jsa-table th,
+        .matrix-table td, .matrix-table th,
+        .comparison-table td, .comparison-table th,
+        .checklist-table td, .checklist-table th,
+        .analysis-table td, .analysis-table th {
+            border: 1px solid #e5e7eb;
+            padding: 0.5rem;
+            text-align: left;
+        }
+        .jsa-table th, .matrix-table th, .comparison-table th, .checklist-table th, .analysis-table th {
+            background-color: #f3f4f6;
+            font-weight: 600;
+        }
+        .warning-box {
+            background-color: #fef2f2;
+            border-left: 4px solid #ef4444;
+            color: #b91c1c;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        .info-box {
+            background-color: #eff6ff;
+            border-left: 4px solid #3b82f6;
+            color: #1e40af;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        .illustration-container {
+            background-color: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-top: 1rem;
+            text-align: center;
+        }
+        .diagnosis-result-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+        .diagnosis-result-header {
+            padding: 0.75rem 1rem;
+            background-color: #f3f4f6;
+            font-weight: 600;
+        }
+        .diagnosis-result-body {
+            padding: 1rem;
+            background-color: white;
+        }
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border-left-color: #09f;
+            animation: spin 1s ease infinite;
+            margin: 2rem auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <div class="flex h-screen bg-gray-200">
+        <!-- Sidebar -->
+        <div id="sidebar" class="w-64 bg-gray-800 text-white p-4 space-y-2 overflow-y-auto absolute inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition duration-200 ease-in-out z-30">
+            <h1 class="text-xl font-bold mb-4 px-2">メニュー</h1>
+            <a href="#home" class="sidebar-link block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 active">
+                <i data-lucide="home" class="inline-block w-5 h-5 mr-2"></i>ホーム
+            </a>
+            <h2 class="text-lg font-semibold pt-4 px-2">マニュアル</h2>
+            <a href="#chapter-0" class="sidebar-link block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">序章</a>
+            <a href="#chapter-1" class="sidebar-link block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">第1部: 安全作業</a>
+            <a href="#chapter-2" class="sidebar-link block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">第2部: 故障調査</a>
+            <a href="#chapter-3" class="sidebar-link block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">第3部: 症状別フロー</a>
+            <a href="#chapter-4" class="sidebar-link block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">第4部: 詳細調査</a>
+            <a href="#chapter-5" class="sidebar-link block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">第5部: 報告業務</a>
+            <a href="#pump-manual" class="sidebar-link block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">ポンプ故障マニュアル</a>
+
+            <h2 class="text-lg font-semibold pt-4 px-2">ツール</h2>
+             <a href="#troubleshooting-tool" class="sidebar-link block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">
+                <i data-lucide="wrench" class="inline-block w-5 h-5 mr-2"></i>診断ツール
+            </a>
+            <a href="#checklist-tool" class="sidebar-link block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">
+                <i data-lucide="check-square" class="inline-block w-5 h-5 mr-2"></i>安全チェックリスト
+            </a>
+            <a href="#analysis-tool" class="sidebar-link block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">
+                <i data-lucide="pie-chart" class="inline-block w-5 h-5 mr-2"></i>費用対効果分析
+            </a>
+            <a href="#appendix" class="sidebar-link block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">
+                <i data-lucide="book" class="inline-block w-5 h-5 mr-2"></i>付録
+            </a>
+        </div>
+
+        <!-- Main content -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <!-- Header -->
+            <header class="bg-white shadow-md p-4 flex justify-between items-center">
+                <button id="menu-button" class="md:hidden p-2 -ml-2">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+                <h1 id="header-title" class="text-lg sm:text-xl font-semibold text-gray-800 truncate">ホーム</h1>
+                <div class="w-6"></div>
+            </header>
+
+            <!-- Content Area -->
+            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100 p-4 sm:p-6 md:p-8">
+                <div id="content-container">
+                    <!-- Home Section -->
+                    <section id="home" class="content-section active">
+                        <div class="bg-white p-6 sm:p-8 rounded-lg shadow-lg">
+                            <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">浄化槽 故障調査・安全作業マニュアル</h1>
+                            <p class="text-base sm:text-lg text-gray-700 mb-6">このウェブサイトは、浄化槽保守点検員が現場で直面する課題に対し、安全かつ効率的に対応するためのデジタルマニュアルです。</p>
+                            
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 sm:p-6 rounded-lg">
+                                    <h2 class="text-lg sm:text-xl font-bold mb-2 flex items-center"><i data-lucide="alert-triangle" class="w-6 h-6 mr-2"></i>最優先事項：安全作業</h2>
+                                    <p class="mb-4 text-sm sm:text-base">感電、転落、酸欠は致命的な事故に繋がります。いかなる時も安全手順を最優先してください。</p>
+                                    <a href="#chapter-1" class="nav-button bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded inline-flex items-center text-sm sm:text-base">
+                                        安全作業マニュアルへ <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
+                                    </a>
+                                </div>
+                                <div class="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 sm:p-6 rounded-lg">
+                                    <h2 class="text-lg sm:text-xl font-bold mb-2 flex items-center"><i data-lucide="brain-circuit" class="w-6 h-6 mr-2"></i>AI搭載 診断ツール</h2>
+                                    <p class="mb-4 text-sm sm:text-base">現場の状況や測定値を入力し、AIが複合的な故障診断とレポート作成を支援します。</p>
+                                    <a href="#troubleshooting-tool" class="nav-button bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded inline-flex items-center text-sm sm:text-base">
+                                        診断ツールを開始 <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="mt-8">
+                                <h3 class="text-xl sm:text-2xl font-bold text-gray-800 mb-4">クイックアクセス</h3>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                                    <a href="#checklist-tool" class="nav-button bg-white p-4 rounded-lg shadow hover:shadow-md transition-shadow flex items-center text-gray-700">
+                                        <i data-lucide="check-square" class="w-8 h-8 mr-3 text-green-500"></i>
+                                        <div>
+                                            <h4 class="font-semibold">安全チェックリスト</h4>
+                                            <p class="text-sm text-gray-600">作業前の安全確認</p>
+                                        </div>
+                                    </a>
+                                    <a href="#analysis-tool" class="nav-button bg-white p-4 rounded-lg shadow hover:shadow-md transition-shadow flex items-center text-gray-700">
+                                        <i data-lucide="pie-chart" class="w-8 h-8 mr-3 text-yellow-500"></i>
+                                        <div>
+                                            <h4 class="font-semibold">費用対効果分析</h4>
+                                            <p class="text-sm text-gray-600">修理 vs 交換</p>
+                                        </div>
+                                    </a>
+                                    <a href="#chapter-3" class="nav-button bg-white p-4 rounded-lg shadow hover:shadow-md transition-shadow flex items-center text-gray-700">
+                                        <i data-lucide="git-pull-request" class="w-8 h-8 mr-3 text-purple-500"></i>
+                                        <div>
+                                            <h4 class="font-semibold">トラブルフロー</h4>
+                                            <p class="text-sm text-gray-600">症状別の原因究明</p>
+                                        </div>
+                                    </a>
+                                    <a href="#appendix" class="nav-button bg-white p-4 rounded-lg shadow hover:shadow-md transition-shadow flex items-center text-gray-700">
+                                        <i data-lucide="book" class="w-8 h-8 mr-3 text-indigo-500"></i>
+                                        <div>
+                                            <h4 class="font-semibold">付録</h4>
+                                            <p class="text-sm text-gray-600">用語集・機器リスト</p>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Chapter 0 to 5 remain the same -->
+                    <section id="chapter-0" class="content-section">
+                        <div class="bg-white p-6 sm:p-8 rounded-lg shadow-lg">
+                            <h1 class="text-2xl sm:text-3xl font-bold mb-6">序章：浄化槽保守点検の専門性と法的責務</h1>
+                            <div class="space-y-8">
+                                <div>
+                                    <h2 class="text-xl sm:text-2xl font-semibold mb-2">1. 本マニュアルの目的と位置づけ</h2>
+                                    <p class="text-sm sm:text-base leading-relaxed">本マニュアルは、浄化槽保守点検業務における安全性、品質、および効率性の標準を確立するために策定された、全作業員が遵守すべき業務規程である。その目的は、単なる事後対応的な「修理」から、体系的かつ論理的な「故障診断」へと業務水準を引き上げることにある。これにより、顧客に対して一貫した高品質のサービスを提供し、当社の専門家集団としての信頼性を維持・向上させる。</p>
+                                </div>
+                                <div>
+                                    <h2 class="text-xl sm:text-2xl font-semibold mb-2">2. 浄化槽管理士の役割と独占業務</h2>
+                                    <p class="text-sm sm:text-base leading-relaxed">浄化槽管理士は、浄化槽法に基づき水質汚濁防止の重要な役割を担う国家資格である。この資格の核心は、法によって定められた「保守点検」を独占的に実施できる点にある。この法的責務は、我々の事業の根幹を成すものであり、同時に重大な法的責任を伴うことを意味する。</p>
+                                </div>
+                                <div>
+                                    <h2 class="text-xl sm:text-2xl font-semibold mb-2">3. 保守点検と清掃の法的区分</h2>
+                                    <p class="text-sm sm:text-base leading-relaxed">浄化槽の維持管理において、「保守点検」と「清掃」は、浄化槽法上、明確に区別された異なる業務である。この区別を正確に理解することは、法令遵守の観点から極めて重要である。作業員が現場で下すべき最も重要な判断の一つは、目の前の状況が「保守点検」の範囲内で対応可能か、あるいは法的に「清掃」が必要な段階に至っているかを見極めることである。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <section id="chapter-1" class="content-section">
+                        <div class="bg-white p-6 sm:p-8 rounded-lg shadow-lg">
+                            <h1 class="text-2xl sm:text-3xl font-bold mb-6">第1部：最優先事項：安全作業の徹底</h1>
+                            <div class="space-y-8">
+                                <div class="warning-box">
+                                    <p class="font-bold">絶対原則：「安全確認が全ての作業に優先する」</p>
+                                    <p class="text-sm sm:text-base">いかなる状況においても、顧客からの催促や作業の遅れを理由に、安全手順を省略することは断じて許されない。</p>
+                                </div>
+                                <div>
+                                    <h2 class="text-xl sm:text-2xl font-semibold mb-2">1.1 作業安全の基本原則と心構え</h2>
+                                    <p class="text-sm sm:text-base leading-relaxed">感電、槽内への転落、酸素欠乏症、硫化水素中毒は過去に数多くの死亡災害を引き起こしてきた。槽内で作業員が倒れた場合、<strong class="text-red-600">絶対に槽内に進入してはならない。</strong>即座に119番通報し、送風機による強制換気を開始すること。</p>
+                                </div>
+                                <div>
+                                    <h2 class="text-xl sm:text-2xl font-semibold mb-2">1.3 感電防止対策</h2>
+                                    <p class="text-sm sm:text-base leading-relaxed">機器に触れる前には、必ず分電盤の該当ブレーカーを「切」にし、施錠（ロックアウト）と札の掲示（タグアウト）を行う。浸水・冠水した機器は絶対に電源を投入せず、即時交換を強く推奨する。</p>
+                                </div>
+                                <div>
+                                    <h2 class="text-xl sm:text-2xl font-semibold mb-2">1.4 酸素欠乏・硫化水素中毒防止対策</h2>
+                                    <p class="text-sm sm:text-base leading-relaxed">浄化槽内部は「酸素欠乏危険場所」である。槽内立入りは原則禁止。やむを得ない場合は、ガス濃度測定、強制換気、監視員の配置、呼吸用保護具の着用を厳守する。</p>
+                                </div>
+                                <div class="overflow-x-auto">
+                                    <h3 class="text-lg sm:text-xl font-semibold mb-2">Table 1.1: 職務安全分析（JSA）テンプレート</h3>
+                                    <table class="w-full text-sm text-left text-gray-500 jsa-table">
+                                        <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                                            <tr><th>作業ステップ</th><th>潜在的危険源</th><th>管理・対策措置</th></tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr><td>ブロワーカバーの取り外し</td><td>感電、回転部への巻き込まれ</td><td>ブレーカー遮断、ロックアウト・タグアウト実施、検電器による停電確認</td></tr>
+                                            <tr><td>マンホール蓋の開放</td><td>硫化水素中毒、酸素欠乏、転落</td><td>開放前のガス濃度測定、強制換気の実施、監視員の配置、2名作業の徹底</td></tr>
+                                            <tr><td>槽内水質検査</td><td>汚水飛沫による感染、器具の落下</td><td>保護ゴーグル・ゴム手袋の着用、器具に落下防止ストラップを装着</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="chapter-2" class="content-section">
+                        <div class="bg-white p-6 sm:p-8 rounded-lg shadow-lg">
+                            <h1 class="text-2xl sm:text-3xl font-bold mb-6">第2部：故障調査の基本フレームワーク</h1>
+                            <div class="space-y-8">
+                                <div>
+                                    <h2 class="text-xl sm:text-2xl font-semibold mb-2">2.1 初期対応と顧客ヒアリング</h2>
+                                    <p class="text-sm sm:text-base leading-relaxed">故障診断は顧客からのヒアリングから始まる。専門用語を避け、共感的な態度で以下の情報を聞き取ること。</p>
+                                    <ul class="list-disc list-inside mt-2 space-y-1 text-sm sm:text-base">
+                                        <li><strong class="font-medium">異常の発生時期:</strong> 「いつから」問題が始まりましたか？</li>
+                                        <li><strong class="font-medium">異常の具体的な内容:</strong> 「どのような」異常ですか？</li>
+                                        <li><strong class="font-medium">発生のきっかけ:</strong> 何か「きっかけ」はありましたか？（例：大雨、停電）</li>
+                                        <li><strong class="font-medium">通常と異なる使用状況:</strong> 普段と違うものを流しませんでしたか？</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h2 class="text-xl sm:text-2xl font-semibold mb-2">2.2 五感による初期診断</h2>
+                                    <p class="text-sm sm:text-base leading-relaxed">専門機器を用いる前に、五感を駆使して状況を把握する。</p>
+                                    <ul class="list-disc list-inside mt-2 space-y-1 text-sm sm:text-base">
+                                        <li><strong class="font-medium">聴覚:</strong> ブロワーの作動音、異音（ゴー、カタカタ、シュー）、槽内からの音（ゴボゴボ）。</li>
+                                        <li><strong class="font-medium">嗅覚:</strong> 臭いの質（腐卵臭、土の臭い）、発生源の特定。</li>
+                                        <li><strong class="font-medium">視覚:</strong> ブロワー周辺、マンホール、放流水の色・濁り、槽内水位。</li>
+                                        <li><strong class="font-medium">触覚 (※電源遮断後):</strong> ブロワーの振動、異常な温度。</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h2 class="text-xl sm:text-2xl font-semibold mb-2">2.3 専門測定機器による定量的評価</h2>
+                                    <p class="text-sm sm:text-base leading-relaxed">五感による仮説を、客観的なデータで検証する。</p>
+                                    <ul class="list-disc list-inside mt-2 space-y-1 text-sm sm:text-base">
+                                        <li><strong class="font-medium">圧力計:</strong> ブロワーの背圧を測定。高圧は下流の詰まり、低圧は空気漏れや能力低下を示す。</li>
+                                        <li><strong class="font-medium">水質検査キット:</strong> pH、溶存酸素(DO)、透視度、残留塩素を測定し、浄化槽の健康状態を数値化する。</li>
+                                        <li><strong class="font-medium">絶縁抵抗計（メガー）:</strong> 漏電の危険性や電気的な劣化を診断する。</li>
+                                        <li><strong class="font-medium">汚泥厚・スカム厚測定器:</strong> 清掃が必要かどうかの客観的判断基準となる。</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="chapter-3" class="content-section">
+                        <div class="bg-white p-6 sm:p-8 rounded-lg shadow-lg">
+                            <h1 class="text-2xl sm:text-3xl font-bold mb-6">第3部：症状別トラブルシューティング・フロー</h1>
+                            <p class="mb-6 text-sm sm:text-base">現場で遭遇する代表的な異常症状に基づき、原因究明のための論理的な診断フローを提示します。より詳細な手順は<a href="#troubleshooting-tool" class="text-blue-600 hover:underline nav-button">診断ツール</a>をご利用ください。</p>
+                            
+                            <div class="overflow-x-auto">
+                                <h3 class="text-lg sm:text-xl font-semibold mb-2">症状-原因-対策クイックリファレンスマトリクス</h3>
+                                <table class="w-full text-sm text-left text-gray-500 matrix-table">
+                                    <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                                        <tr><th>症状</th><th>主な原因</th><th>初期確認項目</th><th>参照</th></tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td>ブロワー完全停止</td><td>電源異常、ダイヤフラム破損、モーター焼損</td><td>ブレーカー、コンセント、保護スイッチ</td><td>3.1</td></tr>
+                                        <tr><td>異音・異常振動</td><td>共振、部品の緩み・摩耗、空気漏れ</td><td>設置状況、各部ネジ、Vベルト、接続ホース</td><td>3.2</td></tr>
+                                        <tr><td>悪臭</td><td>ブロワー停止、送風量不足、汚泥蓄積、散気管詰まり</td><td>ブロワー作動状況、フィルター、汚泥厚、背圧</td><td>3.3</td></tr>
+                                        <tr><td>高水位</td><td>ポンプ故障、配管詰まり、放流先水位上昇</td><td>ポンプ作動、放流先の状況、槽内汚泥</td><td>3.4</td></tr>
+                                        <tr><td>低水位</td><td>槽本体の破損・亀裂による漏水</td><td>槽周辺の地面の陥没・湿潤</td><td>3.4</td></tr>
+                                        <tr><td>異常発熱</td><td>設置環境不良、フィルター詰まり、背圧上昇</td><td>風通し、フィルターの状態、背圧測定</td><td>3.6</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <section id="chapter-4" class="content-section">
+                        <div class="bg-white p-6 sm:p-8 rounded-lg shadow-lg">
+                            <h1 class="text-2xl sm:text-3xl font-bold mb-6">第4部：主要機器・部品の詳細調査と応急処置</h1>
+                            <div class="space-y-8">
+                                <div>
+                                    <h2 class="text-xl sm:text-2xl font-semibold mb-2">4.1 電磁式ブロワー（ダイヤフラム式）</h2>
+                                    <p class="text-sm sm:text-base">家庭用で最も多いタイプ。故障の多くは消耗品（フィルター、ダイヤフラム）に起因する。</p>
+                                    <ul class="list-disc list-inside mt-2 space-y-1 text-sm sm:text-base">
+                                        <li><strong>フィルター清掃:</strong> 数ヶ月に一度実施。ホコリやゴミを除去する。</li>
+                                        <li><strong>ダイヤフラム交換:</strong> ブロワー停止（保護スイッチ作動）、送風量低下、異常振動がサイン。左右一対で交換が原則。交換後は保護スイッチのリセットを忘れずに行う。</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h2 class="text-xl sm:text-2xl font-semibold mb-2">4.2 ロータリー式ブロワー</h2>
+                                    <p class="text-sm sm:text-base">大型浄化槽用。オイルとVベルトの管理が重要。</p>
+                                    <ul class="list-disc list-inside mt-2 space-y-1 text-sm sm:text-base">
+                                        <li><strong>オイル管理:</strong> 定期的な量と質の確認、交換（半年～1年）。</li>
+                                        <li><strong>Vベルト点検:</strong> 張り（テンション）と摩耗・ひび割れを確認。</li>
+                                        <li><strong>ベアリング確認:</strong> 異音（ゴーッ、ガラガラ）の原因。聴診棒で確認。現場での交換は不可。</li>
+                                    </ul>
+                                </div>
+                                <div class="overflow-x-auto">
+                                    <h3 class="text-lg sm:text-xl font-semibold mb-2">ブロワータイプ別 点検項目比較表</h3>
+                                    <table class="w-full text-sm text-left text-gray-500 comparison-table">
+                                        <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                                            <tr><th>点検項目</th><th>電磁式 (ダイヤフラム式)</th><th>ロータリー式</th></tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr><td>エアフィルター</td><td>◎（必須・定期清掃）</td><td>◎（必須・定期清掃）</td></tr>
+                                            <tr><td>ダイヤフラム</td><td>◎（最重要消耗品）</td><td>-</td></tr>
+                                            <tr><td>オイル</td><td>- （無給油）</td><td>◎（必須・定期管理）</td></tr>
+                                            <tr><td>Vベルト</td><td>- （直動式）</td><td>◎（必須・定期点検）</td></tr>
+                                            <tr><td>ベアリング</td><td>◯（通常は非分解）</td><td>◎（最重要部品）</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="chapter-5" class="content-section">
+                        <div class="bg-white p-6 sm:p-8 rounded-lg shadow-lg">
+                            <h1 class="text-2xl sm:text-3xl font-bold mb-6">第5部：修理・交換の判断基準と報告業務</h1>
+                            <div class="space-y-8">
+                                <div>
+                                    <h2 class="text-xl sm:text-2xl font-semibold mb-2">5.1 修理か交換かの判断フロー</h2>
+                                    <p class="text-sm sm:text-base">技術的な判断と経済的な合理性に基づき、顧客に最適な解決策を提案する。判断の主要因は以下の通り。</p>
+                                    <ul class="list-disc list-inside mt-2 space-y-1 text-sm sm:text-base">
+                                        <li><strong>使用年数:</strong> 耐用年数（5～10年）を超えているか。</li>
+                                        <li><strong>コスト比較:</strong> 修理費用が新品交換費用の50%を超える場合は交換を推奨。</li>
+                                        <li><strong>ライフサイクルコスト(LCC):</strong> 新しい省エネモデルによる電気代削減も考慮に入れる。</li>
+                                    </ul>
+                                    <p class="mt-2 text-sm sm:text-base">顧客への説明には<a href="#analysis-tool" class="text-blue-600 hover:underline nav-button">費用対効果分析ツール</a>が有効です。</p>
+                                </div>
+                                <div>
+                                    <h2 class="text-xl sm:text-2xl font-semibold mb-2">5.2 故障報告書の作成と顧客への説明</h2>
+                                    <p class="text-sm sm:text-base">全ての作業完了後、必ず故障報告書を作成し、顧客に説明の上、署名を得る。これは作業内容の証明、請求の根拠、将来のメンテナンス履歴となる。</p>
+                                    <p class="font-semibold mt-2 text-sm sm:text-base">記載必須項目:</p>
+                                    <ul class="list-disc list-inside mt-2 space-y-1 text-sm sm:text-base">
+                                        <li>基本情報、依頼内容</li>
+                                        <li>診断結果（五感観察、機器測定値）</li>
+                                        <li>故障の根本原因</li>
+                                        <li>実施した処置内容（修理、部品交換など）</li>
+                                        <li>今後の推奨事項</li>
+                                        <li>料金明細</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Pump Manual -->
+                    <section id="pump-manual" class="content-section">
+                        <div class="bg-white p-6 sm:p-8 rounded-lg shadow-lg">
+                            <h1 class="text-2xl sm:text-3xl font-bold mb-6">浄化槽放流ポンプ 故障原因調査手順マニュアル</h1>
+                            <div class="space-y-8">
+                                <div class="warning-box">
+                                    <p class="font-bold">安全に関する最重要警告</p>
+                                    <p class="text-sm sm:text-base">ポンプ作業は感電、転落、ガス吸引等の重大なリスクを伴います。必ず安全手順を遵守し、必須保護具を着用してください。</p>
+                                </div>
+                                <div>
+                                    <h2 class="text-xl sm:text-2xl font-semibold mb-2">第1部：初期診断と状況把握</h2>
+                                    <ul class="list-disc list-inside mt-2 space-y-1 text-sm sm:text-base">
+                                        <li><strong>顧客ヒアリング:</strong> 異常の時期、内容、発生前の状況を確認。</li>
+                                        <li><strong>制御盤の確認:</strong> 表示ランプ、警報履歴を確認。濡れている場合は絶対に触れない。</li>
+                                        <li><strong>五感による点検:</strong> 槽内水位（異常高水位は要注意）、ポンプからの異音（ガラガラ、ブーン）、異臭、水質を確認。</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h2 class="text-xl sm:text-2xl font-semibold mb-2">第2部：症状別トラブルシューティング</h2>
+                                    <ul class="list-disc list-inside mt-2 space-y-1 text-sm sm:text-base">
+                                        <li><strong>ケース1: ポンプが全く作動しない</strong> → 電源系統（ブレーカー、検電）、制御回路（手動運転、フロートスイッチ、リレー）を確認。</li>
+                                        <li><strong>ケース2: 作動するが揚水しない/少ない</strong> → 回転方向（三相の場合）、エアロック、配管詰まりを確認。</li>
+                                        <li><strong>ケース3: 断続的に運転・停止を繰り返す</strong> → モーター過負荷（サーマルリレー）、フロートのチャタリングを確認。</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h2 class="text-xl sm:text-2xl font-semibold mb-2">第3部：詳細診断と部品単体試験</h2>
+                                    
+                                    <h3 class="text-lg sm:text-xl font-semibold mt-4 mb-2">3.1. フロートスイッチの導通試験手順</h3>
+                                    <p class="text-sm sm:text-base">フロートスイッチが水位の変化に応じて、電気回路を確実に開閉（ON/OFF）しているかを確認します。</p>
+                                    <div class="illustration-container grid md:grid-cols-2 gap-8 items-center">
+                                        <div>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 150" class="mx-auto h-40">
+                                                <rect x="10" y="10" width="180" height="130" rx="5" fill="#fff" stroke="#9ca3af" />
+                                                <text x="100" y="25" font-size="10" text-anchor="middle" font-weight="bold">OFF状態 (フロート下向き)</text>
+                                                <!-- Tester -->
+                                                <rect x="130" y="40" width="50" height="70" rx="5" fill="#e5e7eb"/>
+                                                <rect x="135" y="45" width="40" height="20" fill="#fff"/>
+                                                <text x="155" y="58" font-size="10" text-anchor="middle">OL / ∞</text>
+                                                <path d="M140 110 l-10 20" stroke="red" stroke-width="1.5" />
+                                                <path d="M170 110 l10 20" stroke="black" stroke-width="1.5" />
+                                                <!-- Float switch -->
+                                                <path d="M50 40 v50" stroke="#6b7280" stroke-width="2"/>
+                                                <ellipse cx="50" cy="95" rx="15" ry="20" fill="#3b82f6" stroke="#1d4ed8"/>
+                                                <path d="M50 45 l-20 40" stroke="red" stroke-width="1.5" />
+                                                <path d="M50 45 l20 40" stroke="black" stroke-width="1.5" />
+                                                <!-- Connection -->
+                                                <path d="M70 85 Q 100 135, 130 130" stroke="black" fill="none" stroke-width="1.5"/>
+                                                <path d="M30 85 Q 60 135, 120 130" stroke="red" fill="none" stroke-width="1.5"/>
+                                                <text x="100" y="145" font-size="10" text-anchor="middle">導通なし (ビープ音なし)</text>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 150" class="mx-auto h-40">
+                                                <rect x="10" y="10" width="180" height="130" rx="5" fill="#fff" stroke="#9ca3af" />
+                                                <text x="100" y="25" font-size="10" text-anchor="middle" font-weight="bold">ON状態 (フロート上向き)</text>
+                                                <!-- Tester -->
+                                                <rect x="130" y="40" width="50" height="70" rx="5" fill="#e5e7eb"/>
+                                                <rect x="135" y="45" width="40" height="20" fill="#fff"/>
+                                                <text x="155" y="58" font-size="10" text-anchor="middle">0.0 Ω</text>
+                                                <path d="M140 110 l-10 20" stroke="red" stroke-width="1.5" />
+                                                <path d="M170 110 l10 20" stroke="black" stroke-width="1.5" />
+                                                <!-- Float switch -->
+                                                <path d="M50 110 v-50" stroke="#6b7280" stroke-width="2"/>
+                                                <ellipse cx="50" cy="55" rx="15" ry="20" fill="#3b82f6" stroke="#1d4ed8"/>
+                                                <path d="M50 105 l-20 -40" stroke="red" stroke-width="1.5" />
+                                                <path d="M50 105 l20 -40" stroke="black" stroke-width="1.5" />
+                                                <!-- Connection -->
+                                                <path d="M70 65 Q 100 135, 130 130" stroke="black" fill="none" stroke-width="1.5"/>
+                                                <path d="M30 65 Q 60 135, 120 130" stroke="red" fill="none" stroke-width="1.5"/>
+                                                <text x="100" y="145" font-size="10" text-anchor="middle" fill="green" font-weight="bold">導通あり (ビープ音)</text>
+                                            </svg>
+                                        </div>
+                                    </div>
+
+                                    <h3 class="text-lg sm:text-xl font-semibold mt-6 mb-2">3.2. ポンプモーターの絶縁抵抗測定手順</h3>
+                                    <p class="text-sm sm:text-base">ポンプモーターの漏電を診断する最重要項目です。メガテスターから高電圧を印加するため、安全手順を厳守してください。</p>
+                                    <div class="illustration-container">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 150" class="mx-auto h-48">
+                                            <rect x="5" y="5" width="240" height="140" rx="5" fill="#fff" stroke="#9ca3af" />
+                                            <text x="125" y="20" font-size="10" text-anchor="middle" font-weight="bold">絶縁抵抗測定</text>
+                                            <!-- Megatester -->
+                                            <rect x="150" y="40" width="80" height="90" rx="5" fill="#fde047"/>
+                                            <text x="190" y="52" font-size="8" text-anchor="middle">絶縁抵抗計</text>
+                                            <rect x="160" y="60" width="60" height="25" fill="#fff"/>
+                                            <text x="190" y="75" font-size="10" text-anchor="middle" font-weight="bold"> > 10 MΩ</text>
+                                            <circle cx="170" cy="110" r="4" fill="green"/>
+                                            <text x="170" y="120" font-size="7" text-anchor="middle">EARTH</text>
+                                            <circle cx="210" cy="110" r="4" fill="red"/>
+                                            <text x="210" y="120" font-size="7" text-anchor="middle">LINE</text>
+                                            <!-- Pump -->
+                                            <path d="M50,120 C 50,90 80,90 80,120 Z" fill="#9ca3af"/>
+                                            <rect x="60" y="60" width="10" height="30" fill="#6b7280"/>
+                                            <text x="65" y="55" font-size="8" text-anchor="middle">ポンプ</text>
+                                            <!-- Wires -->
+                                            <path d="M65 90 v 30" stroke="blue" stroke-width="1.5"/>
+                                            <path d="M65 120 h -30" stroke="blue" stroke-width="1.5"/>
+                                            <circle cx="35" cy="120" r="3" fill="blue"/>
+                                            <text x="35" y="130" font-size="7" text-anchor="middle">動力線</text>
+                                            <!-- Ground -->
+                                            <path d="M100 120 h 10 v 10" stroke="green" stroke-width="1.5"/>
+                                            <path d="M110 130 h -5" stroke="green" stroke-width="1.5"/>
+                                            <path d="M110 133 h -10" stroke="green" stroke-width="1.5"/>
+                                            <path d="M110 136 h -15" stroke="green" stroke-width="1.5"/>
+                                            <text x="100" y="115" font-size="7" text-anchor="middle">アース</text>
+                                            <!-- Connections -->
+                                            <path d="M210 110 C 150 80, 80 80, 35 120" stroke="red" fill="none" stroke-width="1.5" stroke-dasharray="2 2"/>
+                                            <path d="M170 110 C 150 120, 130 120, 110 120" stroke="green" fill="none" stroke-width="1.5" stroke-dasharray="2 2"/>
+                                        </svg>
+                                        <p class="text-sm text-gray-600 mt-2">アース端子とポンプ動力線の間の絶縁抵抗を測定します。<br>測定値が低い場合（例: 1MΩ未満）は漏電の可能性があり、ポンプ交換が必要です。</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <!-- Troubleshooting Tool (NEW) -->
+                    <section id="troubleshooting-tool" class="content-section">
+                        <div class="bg-white p-6 sm:p-8 rounded-lg shadow-lg">
+                            <h1 class="text-2xl sm:text-3xl font-bold mb-2">データ入力式 故障診断ツール</h1>
+                            <p class="mb-6 text-gray-600">現場での観察結果と測定値を入力し、「診断実行」ボタンを押してください。</p>
+                            
+                            <form id="diagnosis-form">
+                                <!-- Step 1: Initial Observations -->
+                                <div class="mb-8">
+                                    <h2 class="text-xl sm:text-2xl font-semibold mb-4 border-b pb-2">ステップ1：初期情報と五感による診断</h2>
+                                    <div class="grid md:grid-cols-2 gap-6">
+                                        <div>
+                                            <label for="hearing-notes" class="block text-sm font-medium text-gray-700 mb-1">顧客からのヒアリング内容</label>
+                                            <textarea id="hearing-notes" rows="4" class="w-full p-3 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm sm:text-base" placeholder="例：昨日からトイレの流れが悪い、大雨が降った、など"></textarea>
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">五感による観察結果（該当するものを選択）</label>
+                                            <div class="space-y-3">
+                                                <label class="flex items-center"><input type="checkbox" id="obs-blower-stopped" class="h-5 w-5 rounded border-gray-300 text-indigo-600"> <span class="ml-2 text-sm sm:text-base">ブロワー／ポンプが完全停止</span></label>
+                                                <label class="flex items-center"><input type="checkbox" id="obs-strange-noise" class="h-5 w-5 rounded border-gray-300 text-indigo-600"> <span class="ml-2 text-sm sm:text-base">異音・異常振動あり</span></label>
+                                                <label class="flex items-center"><input type="checkbox" id="obs-bad-smell" class="h-5 w-5 rounded border-gray-300 text-indigo-600"> <span class="ml-2 text-sm sm:text-base">悪臭あり（腐卵臭など）</span></label>
+                                                <label class="flex items-center"><input type="checkbox" id="obs-high-water" class="h-5 w-5 rounded border-gray-300 text-indigo-600"> <span class="ml-2 text-sm sm:text-base">槽内水位が高い</span></label>
+                                                <label class="flex items-center"><input type="checkbox" id="obs-overheating" class="h-5 w-5 rounded border-gray-300 text-indigo-600"> <span class="ml-2 text-sm sm:text-base">機器の異常発熱</span></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Step 2: Measurements -->
+                                <div class="mb-8">
+                                    <h2 class="text-xl sm:text-2xl font-semibold mb-4 border-b pb-2">ステップ2：専門機器による測定値</h2>
+                                    <div class="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-6">
+                                        <div>
+                                            <label for="measure-insulation" class="block text-sm font-medium text-gray-700">絶縁抵抗値 (MΩ)</label>
+                                            <input type="number" id="measure-insulation" step="0.1" class="mt-1 block w-full p-3 rounded-md border-gray-300 shadow-sm text-sm sm:text-base" placeholder="例: 0.5">
+                                        </div>
+                                        <div>
+                                            <label for="measure-pressure" class="block text-sm font-medium text-gray-700">ブロワー背圧 (kPa)</label>
+                                            <input type="number" id="measure-pressure" step="0.1" class="mt-1 block w-full p-3 rounded-md border-gray-300 shadow-sm text-sm sm:text-base" placeholder="例: 18.0">
+                                        </div>
+                                        <div>
+                                            <label for="measure-do" class="block text-sm font-medium text-gray-700">溶存酸素 (mg/L)</label>
+                                            <input type="number" id="measure-do" step="0.1" class="mt-1 block w-full p-3 rounded-md border-gray-300 shadow-sm text-sm sm:text-base" placeholder="例: 0.2">
+                                        </div>
+                                        <div>
+                                            <label for="measure-ph" class="block text-sm font-medium text-gray-700">pH</label>
+                                            <input type="number" id="measure-ph" step="0.1" class="mt-1 block w-full p-3 rounded-md border-gray-300 shadow-sm text-sm sm:text-base" placeholder="例: 6.5">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Action Button -->
+                                <div class="text-center">
+                                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 sm:px-8 rounded-lg text-base sm:text-lg">
+                                        <i data-lucide="play-circle" class="inline-block w-5 h-5 mr-2"></i>診断実行
+                                    </button>
+                                </div>
+                            </form>
+
+                            <!-- Step 3: Diagnosis Result -->
+                            <div id="diagnosis-result-area" class="mt-8 pt-6 border-t hidden">
+                                <h2 class="text-xl sm:text-2xl font-semibold mb-4">診断結果（ロジックベース）</h2>
+                                <div id="diagnosis-output">
+                                    <!-- Results will be injected here -->
+                                </div>
+                                <div class="text-center mt-6">
+                                    <button id="generate-simple-report" class="bg-gradient-to-r from-green-500 to-teal-600 hover:from-green-600 hover:to-teal-700 text-white font-bold py-3 px-6 sm:px-8 rounded-lg text-base sm:text-lg">
+                                        📝 簡易レポート作成
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- Simple Report Area -->
+                            <div id="simple-report-area" class="mt-8 pt-6 border-t hidden">
+                                <h2 class="text-xl sm:text-2xl font-semibold mb-4 flex items-center">
+                                    <i data-lucide="file-text" class="w-6 h-6 mr-2"></i>簡易診断レポート
+                                </h2>
+                                <div id="simple-report-output" class="p-4 bg-gray-50 rounded-lg border prose max-w-none text-sm sm:text-base">
+                                    <!-- Simple report will be injected here -->
+                                </div>
+                            </div>
+
+                        </div>
+                    </section>
+
+                    <!-- Checklist Tool -->
+                    <section id="checklist-tool" class="content-section">
+                        <div class="bg-white p-6 sm:p-8 rounded-lg shadow-lg">
+                            <h1 class="text-2xl sm:text-3xl font-bold mb-6">作業前安全確認チェックリスト</h1>
+                            <p class="mb-4 text-sm sm:text-base">現場到着後、作業開始前に必ず以下の項目を確認し、チェックを入れてください。</p>
+                            <div class="space-y-4">
+                                <label class="flex items-center p-4 bg-gray-50 rounded-lg border hover:bg-gray-100 cursor-pointer">
+                                    <input type="checkbox" class="h-6 w-6 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                    <span class="ml-4 text-base sm:text-lg text-gray-800">1. 職務安全分析（JSA）を実施したか</span>
+                                </label>
+                                <label class="flex items-center p-4 bg-gray-50 rounded-lg border hover:bg-gray-100 cursor-pointer">
+                                    <input type="checkbox" class="h-6 w-6 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                    <span class="ml-4 text-base sm:text-lg text-gray-800">2. 作業エリアは安全コーン等で区画したか</span>
+                                </label>
+                                <label class="flex items-center p-4 bg-gray-50 rounded-lg border hover:bg-gray-100 cursor-pointer">
+                                    <input type="checkbox" class="h-6 w-6 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                    <span class="ml-4 text-base sm:text-lg text-gray-800">3. 分電盤の電源を遮断し、ロックアウト・タグアウトを実施したか</span>
+                                </label>
+                                <label class="flex items-center p-4 bg-gray-50 rounded-lg border hover:bg-gray-100 cursor-pointer">
+                                    <input type="checkbox" class="h-6 w-6 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                    <span class="ml-4 text-base sm:text-lg text-gray-800">4. 複合型ガス検知器の始業前点検（校正）を実施したか</span>
+                                </label>
+                                <label class="flex items-center p-4 bg-gray-50 rounded-lg border hover:bg-gray-100 cursor-pointer">
+                                    <input type="checkbox" class="h-6 w-6 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                    <span class="ml-4 text-base sm:text-lg text-gray-800">5. マンホール開放前にガス濃度を測定したか</span>
+                                </label>
+                                <label class="flex items-center p-4 bg-gray-50 rounded-lg border hover:bg-gray-100 cursor-pointer">
+                                    <input type="checkbox" class="h-6 w-6 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                    <span class="ml-4 text-base sm:text-lg text-gray-800">6. 強制換気装置を準備・設置したか</span>
+                                </label>
+                                <label class="flex items-center p-4 bg-gray-50 rounded-lg border hover:bg-gray-100 cursor-pointer">
+                                    <input type="checkbox" class="h-6 w-6 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                    <span class="ml-4 text-base sm:text-lg text-gray-800">7. 監視員を配置し、緊急時の連絡体制を確認したか</span>
+                                </label>
+                                <label class="flex items-center p-4 bg-gray-50 rounded-lg border hover:bg-gray-100 cursor-pointer">
+                                    <input type="checkbox" class="h-6 w-6 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                    <span class="ml-4 text-base sm:text-lg text-gray-800">8. 必要な個人用保護具（手袋、ゴーグル等）を全て着用したか</span>
+                                </label>
+                            </div>
+                             <button id="reset-checklist" class="mt-6 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded">
+                                チェックをリセット
+                            </button>
+                        </div>
+                    </section>
+                    
+                    <!-- Analysis Tool -->
+                    <section id="analysis-tool" class="content-section">
+                        <div class="bg-white p-6 sm:p-8 rounded-lg shadow-lg">
+                            <h1 class="text-2xl sm:text-3xl font-bold mb-6">修理 vs 交換 費用対効果分析ツール</h1>
+                            <p class="mb-6 text-sm sm:text-base">このツールは、顧客に修理と交換の選択肢を客観的に提示するためのものです。各項目を入力してください。</p>
+                            <div class="grid md:grid-cols-2 gap-8">
+                                <!-- Repair Option -->
+                                <div>
+                                    <h2 class="text-xl sm:text-2xl font-semibold mb-4 border-b pb-2">選択肢A：現行機の修理</h2>
+                                    <div class="space-y-4">
+                                        <div>
+                                            <label for="repair-parts" class="block text-sm font-medium text-gray-700">部品代 (円)</label>
+                                            <input type="number" id="repair-parts" class="analysis-input mt-1 block w-full p-3 rounded-md border-gray-300 shadow-sm text-sm sm:text-base" placeholder="7500">
+                                        </div>
+                                        <div>
+                                            <label for="repair-labor" class="block text-sm font-medium text-gray-700">作業費 (円)</label>
+                                            <input type="number" id="repair-labor" class="analysis-input mt-1 block w-full p-3 rounded-md border-gray-300 shadow-sm text-sm sm:text-base" placeholder="8000">
+                                        </div>
+                                        <div class="pt-2">
+                                            <p class="text-lg font-semibold">合計費用: <span id="repair-total" class="text-red-600">0</span> 円</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Replacement Option -->
+                                <div>
+                                    <h2 class="text-xl sm:text-2xl font-semibold mb-4 border-b pb-2">選択肢B：新品への交換</h2>
+                                    <div class="space-y-4">
+                                        <div>
+                                            <label for="replace-body" class="block text-sm font-medium text-gray-700">本体代 (円)</label>
+                                            <input type="number" id="replace-body" class="analysis-input mt-1 block w-full p-3 rounded-md border-gray-300 shadow-sm text-sm sm:text-base" placeholder="28800">
+                                        </div>
+                                        <div>
+                                            <label for="replace-labor" class="block text-sm font-medium text-gray-700">作業費 (円)</label>
+                                            <input type="number" id="replace-labor" class="analysis-input mt-1 block w-full p-3 rounded-md border-gray-300 shadow-sm text-sm sm:text-base" placeholder="5000">
+                                        </div>
+                                        <div class="pt-2">
+                                            <p class="text-lg font-semibold">合計費用: <span id="replace-total" class="text-blue-600">0</span> 円</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-8 border-t pt-6">
+                                <h3 class="text-lg sm:text-xl font-semibold">分析結果</h3>
+                                <p id="analysis-result" class="mt-2 text-gray-700 text-sm sm:text-base">各費用を入力してください。</p>
+                                <div class="text-center mt-6">
+                                    <button id="generate-customer-explanation" class="bg-gradient-to-r from-teal-500 to-cyan-600 hover:from-teal-600 hover:to-cyan-700 text-white font-bold py-3 px-6 sm:px-8 rounded-lg text-base sm:text-lg">
+                                        ✨ AIによる顧客への説明文作成
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- AI Explanation Area -->
+                             <div id="customer-explanation-area" class="mt-8 pt-6 border-t hidden">
+                                <h2 class="text-xl sm:text-2xl font-semibold mb-4 flex items-center">
+                                    <i data-lucide="brain-circuit" class="w-6 h-6 mr-2"></i>AI説明文アシスタント
+                                </h2>
+                                <div id="customer-explanation-output" class="p-4 bg-gray-50 rounded-lg border prose max-w-none text-sm sm:text-base">
+                                    <!-- AI explanation will be injected here -->
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Appendix -->
+                    <section id="appendix" class="content-section">
+                        <div class="bg-white p-6 sm:p-8 rounded-lg shadow-lg">
+                            <h1 class="text-2xl sm:text-3xl font-bold mb-6">付録</h1>
+                            <div class="space-y-8">
+                                <div>
+                                    <h2 class="text-xl sm:text-2xl font-semibold mb-2">A-1. 用語集</h2>
+                                    <dl class="space-y-2 text-sm sm:text-base">
+                                        <dt class="font-semibold">嫌気性 (Anaerobic):</dt>
+                                        <dd class="ml-4">酸素のない状態。硫化水素などの悪臭物質を発生させることがある。</dd>
+                                        <dt class="font-semibold">好気性 (Aerobic):</dt>
+                                        <dd class="ml-4">酸素のある状態。ブロワーから供給される酸素を利用して効率的に汚水を浄化する。</dd>
+                                        <dt class="font-semibold">散気管 (Diffuser Pipe):</dt>
+                                        <dd class="ml-4">ブロワーから送られた空気を、槽内で微細な気泡として放出する装置。</dd>
+                                        <dt class="font-semibold">DO (Dissolved Oxygen):</dt>
+                                        <dd class="ml-4">溶存酸素。水中に溶け込んでいる酸素の量。好気性処理の重要な指標。</dd>
+                                    </dl>
+                                </div>
+                                <div>
+                                    <h2 class="text-xl sm:text-2xl font-semibold mb-2">A-6. 将来技術の展望：IoTセンサーとAIによる予知保全</h2>
+                                    <p class="text-sm sm:text-base leading-relaxed">IoTセンサー（振動、温度、水位、水質）とAIを活用し、故障の兆候を検知して故障発生前にメンテナンスを行う「予知保全」が今後の主流となる。これにより、「24時間遠隔監視サービス」のような高付加価値の提供が可能となり、ビジネスモデルを変革する可能性を秘めている。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        // --- Navigation Logic ---
+        const sidebar = document.getElementById('sidebar');
+        const menuButton = document.getElementById('menu-button');
+        
+        menuButton.addEventListener('click', () => {
+            sidebar.classList.toggle('-translate-x-full');
+        });
+
+        document.querySelectorAll('.sidebar-link, .nav-button').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                
+                document.querySelectorAll('.content-section').forEach(section => {
+                    section.classList.remove('active');
+                });
+                
+                const targetSection = document.getElementById(targetId);
+                if (targetSection) {
+                    targetSection.classList.add('active');
+                }
+
+                document.getElementById('header-title').textContent = link.textContent.trim();
+
+                document.querySelectorAll('.sidebar-link').forEach(slink => {
+                    slink.classList.remove('active');
+                });
+                document.querySelector(`.sidebar-link[href="#${targetId}"]`)?.classList.add('active');
+
+                if (window.innerWidth < 768) {
+                    sidebar.classList.add('-translate-x-full');
+                }
+                
+                document.querySelector('main').scrollTop = 0;
+            });
+        });
+
+        // --- Gemini API Call Helper ---
+        async function callGemini(prompt) {
+            const apiKey = ""; // Leave empty
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+            
+            const payload = {
+                contents: [{
+                    role: "user",
+                    parts: [{ text: prompt }]
+                }]
+            };
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`API request failed with status ${response.status}`);
+                }
+
+                const result = await response.json();
+                
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    return result.candidates[0].content.parts[0].text;
+                } else {
+                    console.error("Unexpected API response structure:", result);
+                    return "AIからの応答が予期しない形式でした。";
+                }
+            } catch (error) {
+                console.error("Error calling Gemini API:", error);
+                return `AIの呼び出し中にエラーが発生しました: ${error.message}`;
+            }
+        }
+
+        // --- New Troubleshooting Tool Logic ---
+        const diagnosisForm = document.getElementById('diagnosis-form');
+        const resultArea = document.getElementById('diagnosis-result-area');
+        const resultOutput = document.getElementById('diagnosis-output');
+        const generateSimpleReportBtn = document.getElementById('generate-simple-report');
+        const simpleReportArea = document.getElementById('simple-report-area');
+        const simpleReportOutput = document.getElementById('simple-report-output');
+
+        let lastDiagnosisInputs = {};
+        let lastLogicResults = [];
+
+        diagnosisForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            lastDiagnosisInputs = {
+                hearing: document.getElementById('hearing-notes').value,
+                blowerStopped: document.getElementById('obs-blower-stopped').checked,
+                strangeNoise: document.getElementById('obs-strange-noise').checked,
+                badSmell: document.getElementById('obs-bad-smell').checked,
+                highWater: document.getElementById('obs-high-water').checked,
+                overheating: document.getElementById('obs-overheating').checked,
+                insulation: document.getElementById('measure-insulation').value,
+                pressure: document.getElementById('measure-pressure').value,
+                do: document.getElementById('measure-do').value,
+                ph: document.getElementById('measure-ph').value,
+            };
+
+            lastLogicResults = runDiagnosis(lastDiagnosisInputs);
+            
+            resultOutput.innerHTML = ''; // Clear previous results
+            if (lastLogicResults.length > 0) {
+                lastLogicResults.forEach(result => {
+                    const card = `
+                        <div class="diagnosis-result-card">
+                            <div class="diagnosis-result-header text-red-700 bg-red-100 border-b border-red-200">
+                                <i data-lucide="alert-triangle" class="inline-block w-5 h-5 mr-2"></i>可能性が高い原因： ${result.cause}
+                            </div>
+                            <div class="diagnosis-result-body">
+                                <p class="font-semibold mb-2">診断内容：</p>
+                                <p class="mb-4 text-sm sm:text-base">${result.details}</p>
+                                <p class="font-semibold mb-2">推奨される対応：</p>
+                                <p class="text-sm sm:text-base">${result.action}</p>
+                            </div>
+                        </div>
+                    `;
+                    resultOutput.innerHTML += card;
+                });
+            } else {
+                resultOutput.innerHTML = `
+                    <div class="info-box">
+                        <p>入力された情報からは、特定の故障原因を断定できませんでした。入力項目を確認するか、各マニュアルを参照して追加調査を行ってください。</p>
+                    </div>
+                `;
+            }
+
+            resultArea.classList.remove('hidden');
+            simpleReportArea.classList.add('hidden'); // Hide old report
+            lucide.createIcons();
+        });
+
+        generateSimpleReportBtn.addEventListener('click', () => {
+            simpleReportArea.classList.remove('hidden');
+            simpleReportOutput.innerHTML = '';
+
+            let reportHTML = '<h4>1. 現場状況の要約</h4><ul class="list-disc list-inside mb-4">';
+            if (lastDiagnosisInputs.hearing) {
+                reportHTML += `<li><strong>顧客からのヒアリング:</strong> ${lastDiagnosisInputs.hearing}</li>`;
+            }
+            const observations = [];
+            if(lastDiagnosisInputs.blowerStopped) observations.push("ブロワー/ポンプ停止");
+            if(lastDiagnosisInputs.strangeNoise) observations.push("異音/振動");
+            if(lastDiagnosisInputs.badSmell) observations.push("悪臭");
+            if(lastDiagnosisInputs.highWater) observations.push("高水位");
+            if(lastDiagnosisInputs.overheating) observations.push("異常発熱");
+            if (observations.length > 0) {
+                reportHTML += `<li><strong>五感による観察:</strong> ${observations.join('、 ')}</li>`;
+            }
+            const measurements = [];
+            if(lastDiagnosisInputs.insulation) measurements.push(`絶縁抵抗値: ${lastDiagnosisInputs.insulation} MΩ`);
+            if(lastDiagnosisInputs.pressure) measurements.push(`ブロワー背圧: ${lastDiagnosisInputs.pressure} kPa`);
+            if(lastDiagnosisInputs.do) measurements.push(`溶存酸素: ${lastDiagnosisInputs.do} mg/L`);
+            if(lastDiagnosisInputs.ph) measurements.push(`pH: ${lastDiagnosisInputs.ph}`);
+            if (measurements.length > 0) {
+                reportHTML += `<li><strong>測定値:</strong> ${measurements.join('、 ')}</li>`;
+            }
+            reportHTML += '</ul>';
+
+            if (lastLogicResults && lastLogicResults.length > 0) {
+                reportHTML += '<h4>2. 考えられる根本原因と対策</h4>';
+                lastLogicResults.forEach(result => {
+                    reportHTML += `<div class="mt-2">`;
+                    reportHTML += `<p><strong>・原因: ${result.cause}</strong></p>`;
+                    reportHTML += `<p class="text-sm text-gray-600 ml-4 mt-1">${result.action}</p>`;
+                    reportHTML += `</div>`;
+                });
+            } else {
+                reportHTML += '<h4>2. 考えられる根本原因と対策</h4>';
+                reportHTML += `<p>入力された情報からは、特定の故障原因を断定できませんでした。</p>`;
+            }
+
+            simpleReportOutput.innerHTML = reportHTML;
+        });
+
+        function runDiagnosis(data) {
+            const diagnoses = [];
+            const insulation = parseFloat(data.insulation);
+            const pressure = parseFloat(data.pressure);
+            const doVal = parseFloat(data.do);
+
+            // Rule 1: Insulation Failure (Highest Priority) - REVISED
+            if (!isNaN(insulation) && insulation < 1.0) {
+                diagnoses.push({
+                    cause: "モーター/ポンプの絶縁不良（漏電）",
+                    details: `絶縁抵抗値が ${insulation} MΩと極めて低いです。これは機器内部で電気が漏れている（地絡）ことを示しており、漏電遮断器の作動や感電の直接的な原因となります。`,
+                    action: "安全のため、漏電している機器（ポンプまたはブロワー）を特定するための詳細な調査が必要です。特定された故障機器は交換を推奨します。無理な再稼働は絶対にしないでください。"
+                });
+            }
+            
+            // Rule 2: High Back Pressure
+            if (!isNaN(pressure) && pressure > 15.0) {
+                diagnoses.push({
+                    cause: "ブロワーへの過大な背圧",
+                    details: `ブロワーの背圧が ${pressure} kPaと基準値を超えています。これはブロワーから先の配管や散気管が目詰まりしていることを示します。`,
+                    action: "散気管の清掃または交換、および関連配管の詰まりを確認してください。放置するとブロワーの過負荷・発熱・故障に繋がります。"
+                });
+            }
+            
+            // Rule 3: Blower Stopped
+            if (data.blowerStopped) {
+                 diagnoses.push({
+                    cause: "ブロワーまたはポンプの完全停止",
+                    details: "機器が完全に停止しています。電源系統の問題か、機器本体の致命的な故障（ダイヤフラム破損、モーター焼損など）が考えられます。",
+                    action: "まず分電盤のブレーカーとコンセントの電圧を確認してください。電源に問題がなければ、保護スイッチの作動やモーターの固着などを調査します。詳細はマニュアルの「3.1 ブロワーの完全停止」を参照してください。"
+                });
+            }
+
+            // Rule 4: Bad Smell & Low DO
+            if (data.badSmell && !isNaN(doVal) && doVal < 1.0) {
+                diagnoses.push({
+                    cause: "嫌気状態による水質悪化",
+                    details: `溶存酸素(DO)が ${doVal} mg/Lと低く、悪臭も確認されているため、槽内が酸素不足（嫌気状態）に陥っています。`,
+                    action: "ブロワーの送風量不足が主な原因です。フィルターの目詰まり、背圧の上昇（散気管の詰まり）、またはブロワー自体の能力低下を確認してください。"
+                });
+            }
+            
+            // Rule 5: High Water Level
+            if (data.highWater) {
+                diagnoses.push({
+                    cause: "槽内水位の上昇",
+                    details: "槽内の水位が高い状態です。これは処理水の排出が正常に行われていないことを示します。",
+                    action: "放流ポンプが設置されている場合は、ポンプの故障を第一に疑います（ポンプ故障マニュアル参照）。自然放流式の場合は、放流管の詰まりや放流先の水位上昇を確認してください。"
+                });
+            }
+
+            // Rule 6: Overheating
+            if (data.overheating && !(!isNaN(pressure) && pressure > 15.0)) { // Avoid duplicate cause if pressure is high
+                 diagnoses.push({
+                    cause: "機器の異常発熱",
+                    details: "機器が異常に熱くなっています。これはモーターへの過負荷や内部の摩擦増大を示唆します。",
+                    action: "まず設置環境（風通し）と吸気フィルターの詰まりを確認してください。背圧が正常な場合は、ベアリング摩耗など内部的な問題の可能性があります。使用年数を考慮し交換を検討してください。"
+                });
+            }
+            return diagnoses;
+        }
+
+
+        // --- Checklist Tool Logic ---
+        document.getElementById('reset-checklist').addEventListener('click', () => {
+            document.querySelectorAll('#checklist-tool input[type="checkbox"]').forEach(checkbox => {
+                checkbox.checked = false;
+            });
+        });
+        
+        // --- Analysis Tool Logic ---
+        const analysisInputs = document.querySelectorAll('.analysis-input');
+        const repairTotalEl = document.getElementById('repair-total');
+        const replaceTotalEl = document.getElementById('replace-total');
+        const analysisResultEl = document.getElementById('analysis-result');
+        const generateExplanationBtn = document.getElementById('generate-customer-explanation');
+        const explanationArea = document.getElementById('customer-explanation-area');
+        const explanationOutput = document.getElementById('customer-explanation-output');
+
+        function calculateCosts() {
+            const repairParts = parseFloat(document.getElementById('repair-parts').value) || 0;
+            const repairLabor = parseFloat(document.getElementById('repair-labor').value) || 0;
+            const replaceBody = parseFloat(document.getElementById('replace-body').value) || 0;
+            const replaceLabor = parseFloat(document.getElementById('replace-labor').value) || 0;
+
+            const repairTotal = repairParts + repairLabor;
+            const replaceTotal = replaceBody + replaceLabor;
+
+            repairTotalEl.textContent = repairTotal.toLocaleString();
+            replaceTotalEl.textContent = replaceTotal.toLocaleString();
+
+            if (repairTotal > 0 && replaceTotal > 0) {
+                if (repairTotal > replaceTotal) {
+                    analysisResultEl.textContent = "修理費用が交換費用を上回っています。新品への交換を強く推奨します。";
+                } else if (repairTotal > replaceTotal * 0.5) {
+                    analysisResultEl.textContent = "修理費用が交換費用の50%を超えています。使用年数を考慮し、新品交換が長期的に見て経済的である可能性が高いです。";
+                } else {
+                    analysisResultEl.textContent = "修理費用は交換費用より安価です。しかし、機器の耐用年数や将来的な故障リスクも考慮して総合的に判断してください。";
+                }
+            } else {
+                analysisResultEl.textContent = "各費用を入力してください。";
+            }
+        }
+
+        analysisInputs.forEach(input => {
+            input.addEventListener('input', calculateCosts);
+        });
+        
+        generateExplanationBtn.addEventListener('click', async () => {
+            explanationArea.classList.remove('hidden');
+            explanationOutput.innerHTML = '<div class="spinner"></div>';
+            
+            const repairCost = document.getElementById('repair-total').textContent;
+            const replaceCost = document.getElementById('replace-total').textContent;
+            const recommendation = analysisResultEl.textContent;
+
+            let prompt = `あなたは浄化槽保守点検会社の顧客対応担当者です。以下の費用情報と分析結果に基づき、顧客に対して「修理」と「交換」の選択肢を説明し、推奨される対応を提案する、丁寧で分かりやすい説明文を作成してください。\n\n`;
+            prompt += `--- 費用情報 ---\n`;
+            prompt += `修理費用: ${repairCost} 円\n`;
+            prompt += `新品交換費用: ${replaceCost} 円\n`;
+            prompt += `\n--- 分析結果と推奨 ---\n`;
+            prompt += `${recommendation}\n`;
+            prompt += `-------------------\n\n`;
+            prompt += `この情報をもとに、顧客が納得して判断できるよう、メリット・デメリットを伝えつつ、プロフェッショナルとして推奨する理由を明確にしてください。`;
+
+            const aiResponse = await callGemini(prompt);
+            const formattedResponse = aiResponse.replace(/\n/g, '<br>');
+            explanationOutput.innerHTML = formattedResponse;
+        });
+        
+        // Initial calculations
+        calculateCosts();
+
+    </script>
+</body>
+</html>
