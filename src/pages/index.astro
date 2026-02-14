@@ -1,21 +1,107 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import ContextAlert from '../components/ContextAlert.astro';
-import Markdown from '../components/Markdown.astro';
 
-const explainer = `
-An Astro website can go way beyond static pages - on the right platform.
+const today = '2026年2月14日 09:00時点';
 
-Netlify supports not only [Streaming SSR](https://docs.astro.build/en/guides/server-side-rendering/#html-streaming) and fast [Edge Middleware](https://docs.astro.build/en/guides/middleware/), but also [on-demand revalidation](https://www.netlify.com/blog/cache-tags-and-purge-api-on-netlify/) and [stale-while-revalidate](https://www.netlify.com/blog/swr-and-fine-grained-cache-control/). 
-Any page or data can be rebuilt only when needed, without site visitors ever getting a performance hit.
-`;
+const kpiCards = [
+    { label: '新規陽性者数', value: '1,284人', trend: '前週比 -8.5%', status: 'decrease' },
+    { label: '重症者数', value: '42人', trend: '前日比 -3人', status: 'decrease' },
+    { label: '病床使用率', value: '38.2%', trend: '前日比 +1.1pt', status: 'increase' },
+    { label: '検査件数', value: '12,540件', trend: '7日平均 11,980件', status: 'neutral' }
+];
+
+const weeklyCases = [980, 1120, 1240, 1360, 1210, 1105, 1284];
+const ageGroups = [
+    { label: '20代', value: 24 },
+    { label: '30代', value: 21 },
+    { label: '40代', value: 18 },
+    { label: '50代', value: 15 },
+    { label: '60代以上', value: 22 }
+];
+const boroughs = [
+    { name: '新宿区', cases: 142 },
+    { name: '世田谷区', cases: 137 },
+    { name: '足立区', cases: 126 },
+    { name: '大田区', cases: 118 },
+    { name: '江戸川区', cases: 111 }
+];
 ---
 
-<Layout title="Welcome to Astro.">
-    <ContextAlert class="mb-8" />
-    <h1 class="mb-10">Netlify Platform Starter for Astro</h1>
-    <Markdown content={explainer} class="mb-10 text-lg" />
-    <p>
-        <a href="https://docs.netlify.com/frameworks/astro/" class="btn btn-lg sm:min-w-64">Read the Docs</a>
-    </p>
+<Layout title="東京都 見える化ボード（模倣）">
+    <section class="board-hero">
+        <p class="board-tag">東京都オープンデータ風 ダッシュボード</p>
+        <h1>東京都 見える化ボード（模倣アプリ）</h1>
+        <p class="board-updated">最終更新: {today}</p>
+    </section>
+
+    <section class="kpi-grid">
+        {
+            kpiCards.map((card) => (
+                <article class="kpi-card">
+                    <p class="kpi-label">{card.label}</p>
+                    <p class="kpi-value">{card.value}</p>
+                    <p class:list={['kpi-trend', `is-${card.status}`]}>{card.trend}</p>
+                </article>
+            ))
+        }
+    </section>
+
+    <section class="board-grid">
+        <article class="panel">
+            <h2>7日間の新規陽性者推移</h2>
+            <div class="bar-chart" aria-label="7日間の新規陽性者推移（棒グラフ）">
+                {
+                    weeklyCases.map((value, index) => (
+                        <div class="bar-item">
+                            <div class="bar" style={`height: ${(value / 1400) * 100}%`}>
+                                <span>{value}</span>
+                            </div>
+                            <p>{index + 1}日前</p>
+                        </div>
+                    ))
+                }
+            </div>
+        </article>
+
+        <article class="panel">
+            <h2>年代別構成比</h2>
+            <ul class="share-list">
+                {
+                    ageGroups.map((group) => (
+                        <li>
+                            <div class="share-row">
+                                <span>{group.label}</span>
+                                <strong>{group.value}%</strong>
+                            </div>
+                            <div class="share-track">
+                                <div class="share-fill" style={`width: ${group.value}%`} />
+                            </div>
+                        </li>
+                    ))
+                }
+            </ul>
+        </article>
+
+        <article class="panel panel-wide">
+            <h2>区市町村別 新規陽性者数（上位）</h2>
+            <table class="cases-table">
+                <thead>
+                    <tr>
+                        <th>自治体</th>
+                        <th>新規陽性者数</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {
+                        boroughs.map((row) => (
+                            <tr>
+                                <td>{row.name}</td>
+                                <td>{row.cases}人</td>
+                            </tr>
+                        ))
+                    }
+                </tbody>
+            </table>
+        </article>
+    </section>
 </Layout>
