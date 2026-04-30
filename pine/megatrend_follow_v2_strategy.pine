@@ -1,0 +1,75 @@
+//@version=5
+strategy("Recreated Mega Trend Follow v2", overlay=true, pyramiding=0,
+     process_orders_on_close=true, initial_capital=1000000)
+
+mode      = input.string("close", "signal mode", options=["close", "intrabar"])
+maBase    = input.string("SMA", "base MA", options=["SMA", "LWMA"])
+lenMain   = input.int(50, "trend length", minval=2)
+useVol    = input.bool(true, "use ADX / StdDev filter")
+adxLen    = input.int(14, "ADX length", minval=2)
+sdFastLen = input.int(26, "StdDev fast", minval=2)
+sdSlowLen = input.int(52, "StdDev slow", minval=2)
+atrLen    = input.int(14, "ATR length", minval=2)
+atrMult   = input.float(3.3, "ATR multiplier", step=0.1)
+
+f_ma(src, len, kind) =>
+    kind == "SMA" ? ta.sma(src, len) : ta.wma(src, len)
+
+f_hull_like(src, len, kind) =>
+    half = math.max(1, int(math.round(len * 0.5)))
+    root = math.max(1, int(math.round(math.sqrt(len))))
+    raw  = 2.0 * f_ma(src, half, kind) - f_ma(src, len, kind)
+    f_ma(raw, root, kind)
+
+mega = f_hull_like(close, lenMain, maBase)
+
+var int trend = 0
+trend := mega > mega[1] ? 1 : mega < mega[1] ? -1 : nz(trend[1], 0)
+
+flipLong  = trend == 1 and nz(trend[1], 0) != 1
+flipShort = trend == -1 and nz(trend[1], 0) != -1
+confirmed = mode == "close" ? barstate.isconfirmed : true
+
+adx14 = ta.adx(adxLen)
+sd26  = ta.stdev(close, sdFastLen)
+sd52  = ta.stdev(close, sdSlowLen)
+volOk = adx14 > adx14[1] and sd26 > sd26[1] and sd26 >= sd52
+
+atrv = ta.atr(atrLen)
+longBase  = close - atrv * atrMult
+shortBase = close + atrv * atrMult
+
+var float atrStop = na
+var int   atrDir  = 0
+
+if barstate.isfirst
+    atrDir  := trend == 0 ? 1 : trend
+    atrStop := atrDir == 1 ? longBase : shortBase
+else
+    if atrDir == 1
+        atrStop := math.max(nz(atrStop[1], longBase), longBase)
+        if close < atrStop
+            atrDir  := -1
+            atrStop := shortBase
+    else
+        atrStop := math.min(nz(atrStop[1], shortBase), shortBase)
+        if close > atrStop
+            atrDir  := 1
+            atrStop := longBase
+
+if confirmed and flipLong and (not useVol or volOk)
+    strategy.close("Short")
+    strategy.entry("Long", strategy.long)
+
+if confirmed and flipShort and (not useVol or volOk)
+    strategy.close("Long")
+    strategy.entry("Short", strategy.short)
+
+strategy.exit("L-ATR", "Long", stop=atrStop)
+strategy.exit("S-ATR", "Short", stop=atrStop)
+
+plot(mega, color=trend == 1 ? color.red : color.yellow, linewidth=2, title="MegaTrend")
+plot(atrStop, color=atrDir == 1 ? color.red : color.yellow, linewidth=1, style=plot.style_linebr, title="StopATR")
+barcolor(trend == 1 ? color.red : color.yellow)
+plotshape(flipLong,  title="Buy",  style=shape.triangleup,   location=location.belowbar, color=color.red,    size=size.tiny)
+plotshape(flipShort, title="Sell", style=shape.triangledown, location=location.abovebar, color=color.yellow, size=size.tiny)
