@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
     paths:
-      - public/english-grammar-app/**
+      - deploy/english-grammar-app.zip
       - .github/workflows/english-grammar-pages.yml
   workflow_dispatch:
 
@@ -25,15 +25,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Verify application files
+      - name: Extract application archive
+        shell: bash
         run: |
-          test -f public/english-grammar-app/index.html
-          test -f public/english-grammar-app/app.js
-          test -f public/english-grammar-app/questions.js
+          rm -rf site /tmp/english-grammar-app
+          mkdir -p site /tmp/english-grammar-app
+          unzip -q deploy/english-grammar-app.zip -d /tmp/english-grammar-app
+          APP_DIR="$(find /tmp/english-grammar-app -maxdepth 3 -type f -name index.html -printf '%h\n' | head -n 1)"
+          test -n "$APP_DIR"
+          cp -a "$APP_DIR"/. site/
+          test -f site/index.html
+          test -f site/app.js
+          test -f site/questions.js
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: public/english-grammar-app
+          path: site
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
