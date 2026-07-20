@@ -1,0 +1,48 @@
+name: Deploy English Grammar App
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - deploy/english-grammar-app.zip
+      - .github/workflows/english-grammar-pages.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: english-grammar-pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Extract and verify app
+        shell: bash
+        run: |
+          test -f deploy/english-grammar-app.zip
+          rm -rf site /tmp/english-grammar-app
+          mkdir -p site /tmp/english-grammar-app
+          unzip -q deploy/english-grammar-app.zip -d /tmp/english-grammar-app
+          APP_DIR="$(find /tmp/english-grammar-app -maxdepth 3 -type f -name index.html -printf '%h\n' | head -n 1)"
+          test -n "$APP_DIR"
+          cp -a "$APP_DIR"/. site/
+          test -f site/index.html
+          test -f site/app.js
+          test -f site/questions.js
+          test -f site/manifest.webmanifest
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
